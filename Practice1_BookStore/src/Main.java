@@ -35,7 +35,9 @@ public class Main {
 //        for(AuthorDTO au: authorDTOS){
 //            System.out.println(au.getId() + ", " + au.getName());
 //        }
-        authorService.edit(new AuthorDTO("au1", "Nguyen Van Huyen"));
+        authorService.saveFlơModal();
+
+
     }
 
 }
