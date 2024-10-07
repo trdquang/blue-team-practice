@@ -102,13 +102,11 @@ public class BookServiceImplement implements IBookService {
     @Override
     public List<BookDTO> getAllByAuthor(String authorId) throws IOException {
         List<BookDTO> books = new ArrayList<>();
-        if (fileUtil.readFileBuffer(bookFilePath).size() != 0 && fileUtil.readFileBuffer(bookFilePath).get(0) != null) {
-            for (Book book : fileUtil.readFileBuffer(bookFilePath).stream().map(x -> convertToEntity(x)).toList()) {
-                for (Integer i : book.getAuthorIds()) {
-                    if (i == Integer.parseInt(authorId)) {
-                        books.add(bookMapper.toDTO(book));
-                        break;
-                    }
+        for (BookDTO book:getAll()){
+            for (Integer auId: book.getAuthorIds()){
+                if(auId==Integer.parseInt(authorId)){
+                    books.add(book);
+                    break;
                 }
             }
         }

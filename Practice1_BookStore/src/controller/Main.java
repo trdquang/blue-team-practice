@@ -8,6 +8,7 @@ import service.impl.BookServiceImplement;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Main {
@@ -36,7 +37,8 @@ public class Main {
         bookDTO.setQuantity(10);
         bookDTO.setAuthorIds(authorIds1);
         bookService.edit(bookDTO);
-        bookService.deleteById("1");
+//        bookService.deleteById("1");
+        List<BookDTO> getAllByAuthor= bookService.getAllByAuthor("3");
         int x = 0;
     }
 }
