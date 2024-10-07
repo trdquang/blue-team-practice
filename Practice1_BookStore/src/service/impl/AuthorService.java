@@ -35,7 +35,7 @@ public class AuthorService implements IAuthorService {
         int newID = maxId +1 ;
 
         // Tăng lên 1 và tạo id mới
-        return ""+(newID);
+        return newID +"";
     }
 
 
@@ -68,7 +68,7 @@ public class AuthorService implements IAuthorService {
         }
 
     }
-    public void tra(){
+    public void EditEntity(){
         edit(authorDTO());
     }
 
