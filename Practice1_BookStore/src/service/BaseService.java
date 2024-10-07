@@ -8,10 +8,9 @@ public interface BaseService <T, U>{
     List<T> getAll() throws IOException;
 
     //0- that bai, 1: thanh cong;   (model -> entiry)
-    void save(U u);
+    void save(U u) throws IOException;
 
-    //- e la entity
-    void edit (T e) throws IOException;
+    void edit (T u) throws IOException;
 
     void deleteById(String id) throws IOException;
 

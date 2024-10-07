@@ -30,7 +30,6 @@ public class FileUtil {
              BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             bufferedWriter.write(context);
         } catch (IOException e) {
-
         }
 
     }

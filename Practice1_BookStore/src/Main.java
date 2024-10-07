@@ -1,11 +1,7 @@
-import dto.AuthorDTO;
-import dto.OrderDTO;
+import dto.BookDTO;
 import dto.UserDTO;
 import model.UserModel;
-import service.IOrderService;
-import service.impl.AuthorService;
-import service.impl.OrderService;
-import service.impl.UserService;
+import service.impl.BookServiceImplement;
 import util.FileUtil;
 
 import java.io.*;
@@ -15,12 +11,11 @@ import java.util.List;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
-
     public static void main(String[] args) throws IOException{
-        AuthorService au = new AuthorService();
-        List<AuthorDTO> tmp = au.getAll();
-        for(AuthorDTO it: tmp){
-            System.out.println(it.getId() +", " + it.getName());
+        BookServiceImplement bookServiceImplement = new BookServiceImplement();
+        List<BookDTO> bookDTOS = bookServiceImplement.getAll();
+        for(BookDTO it: bookDTOS){
+            System.out.println(it.getId() + ", " + it.getName());
         }
     }
 
