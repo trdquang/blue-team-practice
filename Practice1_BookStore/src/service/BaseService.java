@@ -7,11 +7,12 @@ public interface BaseService <T, U, E>{
     List<T> getAll();
 
     //0- that bai, 1: thanh cong;   (model -> entiry)
-    int save(U u);
+    void save(U u);
 
-    int edit (U u);
+    //- ela entity
+    void edit (E e);
 
-    int deleteById(String id);
+    void deleteById(String id);
 
-    int findById(String id);
+    E findById(String id);
 }
