@@ -1,11 +1,13 @@
 package service.impl;
 
 import dto.BookDTO;
+import dto.UserDTO;
 import entity.Author;
 import entity.Book;
 import mapper.BookMapper;
 import model.BookModel;
 import service.IBookService;
+import util.FilePath;
 import util.FileUtil;
 
 import java.io.IOException;
@@ -13,7 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BookServiceImplement implements IBookService {
-    public String bookFilePath = "D:\\java_project\\blue-team-practice\\Practice1_BookStore\\src\\util\\book.txt";
+    public String bookFilePath = FilePath.BOOK_FILE_PATH;
     FileUtil fileUtil = new FileUtil();
     BookMapper bookMapper = new BookMapper();
 
@@ -22,12 +24,36 @@ public class BookServiceImplement implements IBookService {
 
     @Override
     public List<BookDTO> getAll() throws IOException {
-        if (fileUtil.readFileBuffer(bookFilePath).size() != 0 && fileUtil.readFileBuffer(bookFilePath).get(0) != null) {
-            List<Book> bookList = fileUtil.readFileBuffer(bookFilePath).stream().map(x -> convertToEntity(x)).toList();
-            return bookList.stream().map(x -> bookMapper.toDTO(x)).collect(Collectors.toList());
-        } else {
-            return new ArrayList<BookDTO>();
+//        if (fileUtil.readFileBuffer(bookFilePath).size() != 0 && fileUtil.readFileBuffer(bookFilePath).get(0) != null) {
+//            List<Book> bookList = fileUtil.readFileBuffer(bookFilePath).stream().map(x -> convertToEntity(x)).toList();
+//            return bookList.stream().map(x -> bookMapper.toDTO(x)).collect(Collectors.toList());
+//        } else {
+//            return new ArrayList<BookDTO>();
+//        }
+        List<BookDTO> bookDTOS = new ArrayList<>();
+        try {
+            List<String> res = FileUtil.readFileBuffer(bookFilePath);
+            for(int i = 0; i < res.size(); i++){
+                String[] obj = res.get(i).split(",");
+
+                String id = obj[0];
+                String name = obj[1];
+                int quantity = Integer.parseInt(obj[2].strip());
+                Set<Integer> s = new HashSet<>();
+                for(int j = 3; j < obj.length; j++){
+                    s.add(Integer.parseInt(obj[j].strip()));
+                }
+
+                BookDTO bookTmp = new BookDTO(id, name, quantity, s);
+                bookDTOS.add(bookTmp);
+            }
+//            System.out.println("Da den day");
+            return bookDTOS;
+
+        }catch (IOException e){
+            System.out.println(e.getMessage());
         }
+        return List.of();
     }
 
     @Override
@@ -56,6 +82,7 @@ public class BookServiceImplement implements IBookService {
             fileUtil.writeFile("D:\\java_project\\blue-team-practice\\Practice1_BookStore\\src\\util\\book.txt", content.toString(), false);
         }
     }
+
 
     @Override
     public void edit(BookDTO bookDTO) throws IOException {
@@ -99,19 +126,19 @@ public class BookServiceImplement implements IBookService {
         }
     }
 
-    @Override
-    public List<BookDTO> getAllByAuthor(String authorId) throws IOException {
-        List<BookDTO> books = new ArrayList<>();
-        for (BookDTO book:getAll()){
-            for (Integer auId: book.getAuthorIds()){
-                if(auId==Integer.parseInt(authorId)){
-                    books.add(book);
-                    break;
-                }
-            }
-        }
-        return books;
-    }
+//    @Override
+//    public List<BookDTO> getAllByAuthor(String authorId) throws IOException {
+//        List<BookDTO> books = new ArrayList<>();
+//        for (BookDTO book:getAll()){
+//            for (Integer auId: book.getAuthorIds()){
+//                if(auId==Integer.parseInt(authorId)){
+//                    books.add(book);
+//                    break;
+//                }
+//            }
+//        }
+//        return books;
+//    }
 
     public Book convertToEntity(String obj) {
         String[] content = obj.split(",");

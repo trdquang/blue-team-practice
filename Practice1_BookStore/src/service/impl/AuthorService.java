@@ -53,9 +53,10 @@ public class AuthorService implements IAuthorService {
     }
 
     @Override
-    public void edit(AuthorDTO e) {
+    public void edit(AuthorDTO authorDTO) throws IOException {
 
     }
+
 
     @Override
     public void deleteById(String id) {
@@ -63,7 +64,8 @@ public class AuthorService implements IAuthorService {
     }
 
     @Override
-    public AuthorDTO findById(String id) {
+    public AuthorDTO findById(String id) throws IOException {
         return null;
     }
+
 }

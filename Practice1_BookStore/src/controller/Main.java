@@ -36,9 +36,9 @@ public class Main {
         bookDTO.setName("Toan 2");
         bookDTO.setQuantity(10);
         bookDTO.setAuthorIds(authorIds1);
-        bookService.edit(bookDTO);
+//        bookService.edit(bookDTO);
 //        bookService.deleteById("1");
-        List<BookDTO> getAllByAuthor= bookService.getAllByAuthor("3");
+//        List<BookDTO> getAllByAuthor= bookService.getAllByAuthor("3");
         int x = 0;
     }
 }

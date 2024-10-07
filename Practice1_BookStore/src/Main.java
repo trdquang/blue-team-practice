@@ -1,9 +1,11 @@
 import dto.AuthorDTO;
+import dto.BookDTO;
 import dto.OrderDTO;
 import dto.UserDTO;
 import model.UserModel;
 import service.IOrderService;
 import service.impl.AuthorService;
+import service.impl.BookServiceImplement;
 import service.impl.OrderService;
 import service.impl.UserService;
 import util.FileUtil;
@@ -17,10 +19,14 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException{
-        AuthorService au = new AuthorService();
-        List<AuthorDTO> tmp = au.getAll();
-        for(AuthorDTO it: tmp){
-            System.out.println(it.getId() +", " + it.getName());
+        BookServiceImplement bookServiceImplement = new BookServiceImplement();
+        List<BookDTO> bookDTOS = bookServiceImplement.getAll();
+        for(BookDTO bk: bookDTOS){
+            System.out.print(bk.getId() + ", " + bk.getName() + ", " + bk.getQuantity() + "\n");
+            for(int it: bk.getAuthorIds()){
+                System.out.print(it + ", ");
+            }
+            System.out.println("-------------------------");
         }
     }
 

@@ -13,15 +13,6 @@ public class Book {
     private String id;
     private String name;
     private int quantity;
-<<<<<<< HEAD
-    private Set<Author>authors;
 
-
-    @Override
-    public String toString() {
-        return id + ", " + name;
-    }
-=======
     private Set<Integer>authorIds;
->>>>>>> duong
 }
