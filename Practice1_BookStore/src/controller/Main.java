@@ -23,22 +23,5 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        Set<Integer> authorIds1 = new HashSet<>();
-        authorIds1.add(1);
-        authorIds1.add(2);
-        authorIds1.add(3);
-        authorIds1.add(4);
-        authorIds1.add(5);
-        BookModel bookModel=new BookModel("toan 1",19,authorIds1);
-        bookService.save(bookModel);
-        BookDTO bookDTO = new BookDTO();
-        bookDTO.setId("1");
-        bookDTO.setName("Toan 2");
-        bookDTO.setQuantity(10);
-        bookDTO.setAuthorIds(authorIds1);
-//        bookService.edit(bookDTO);
-//        bookService.deleteById("1");
-//        List<BookDTO> getAllByAuthor= bookService.getAllByAuthor("3");
-        int x = 0;
     }
 }

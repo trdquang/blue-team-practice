@@ -20,4 +20,12 @@ public class BookMapper {
                 .quantity(model.getQuantity())
                 .build();
     }
+    public Book toEntity(BookDTO dto){
+        return Book.builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                .quantity(dto.getQuantity())
+                .authorIds(dto.getAuthorIds())
+                .build();
+    }
 }
