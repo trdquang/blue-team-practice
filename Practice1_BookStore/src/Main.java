@@ -1,5 +1,10 @@
+import dto.AuthorDTO;
+import dto.OrderDTO;
 import dto.UserDTO;
 import model.UserModel;
+import service.IOrderService;
+import service.impl.AuthorService;
+import service.impl.OrderService;
 import service.impl.UserService;
 import util.FileUtil;
 
@@ -12,10 +17,11 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException{
-        UserService userService = new UserService();
-//        userService.save(new UserModel(  "abc", "2", "3"));
-        UserDTO u = userService.findById("user11");
-        userService.edit(u);
+        AuthorService au = new AuthorService();
+        List<AuthorDTO> tmp = au.getAll();
+        for(AuthorDTO it: tmp){
+            System.out.println(it.getId() +", " + it.getName());
+        }
     }
 
 }

@@ -14,4 +14,10 @@ public class Book {
     private String name;
     private int quantity;
     private Set<Author>authors;
+
+
+    @Override
+    public String toString() {
+        return id + ", " + name;
+    }
 }
