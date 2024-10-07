@@ -1,17 +1,21 @@
 package util;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtil {
-    public static String readFileBuffer(String path) throws IOException {
+    public static List<String> readFileBuffer(String path) throws IOException {
         try (FileInputStream fileInputStream = new FileInputStream(path);
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
         ) {
+            List<String> res = new ArrayList<>();
             String line = bufferedReader.readLine();
-            String res = line + "\n";
+            res.add(line);
             while (line != null) {
                 line = bufferedReader.readLine();
-                res += line +"\n" ;
+                if(line != null)
+                    res.add(line);
             }
             return res;
         } catch (IOException e) {
