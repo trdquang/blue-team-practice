@@ -65,7 +65,7 @@ public class AuthorService implements IAuthorService {
 
     @Override
     public AuthorDTO findById(String id) throws IOException {
-        return null;
+        return getAll().stream().filter(x->x.getId().equals(id)).toList().get(0);
     }
 
 }

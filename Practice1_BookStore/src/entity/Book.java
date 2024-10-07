@@ -13,6 +13,6 @@ public class Book {
     private String id;
     private String name;
     private int quantity;
-
+    private int sell;
     private Set<Integer>authorIds;
 }
