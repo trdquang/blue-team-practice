@@ -11,9 +11,9 @@ public interface BaseService <T, U>{
     void save(U u);
 
     //- e la entity
-    void edit (T e);
+    void edit (T e) throws IOException;
 
-    void deleteById(String id);
+    void deleteById(String id) throws IOException;
 
-    T findById(String id);
+    T findById(String id) throws IOException;
 }

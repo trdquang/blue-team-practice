@@ -25,8 +25,8 @@ public class FileUtil {
 
     }
 
-    public static void writeFile(String path, String context) throws IOException {
-        try (Writer writer = new FileWriter(path);
+    public static void writeFile(String path, String context, boolean status) throws IOException {
+        try (Writer writer = new FileWriter(path, status);
              BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             bufferedWriter.write(context);
         } catch (IOException e) {
