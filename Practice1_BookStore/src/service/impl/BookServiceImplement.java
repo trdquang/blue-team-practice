@@ -6,6 +6,7 @@ import entity.Book;
 import mapper.BookMapper;
 import model.BookModel;
 import service.IBookService;
+import util.FilePath;
 import util.FileUtil;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BookServiceImplement implements IBookService {
-    public String bookFilePath = "D:\\java_project\\blue-team-practice\\Practice1_BookStore\\src\\util\\book.txt";
+    public String bookFilePath = "src/util/book.txt";
     FileUtil fileUtil = new FileUtil();
     BookMapper bookMapper = new BookMapper();
 
@@ -22,7 +23,7 @@ public class BookServiceImplement implements IBookService {
 
     @Override
     public List<BookDTO> getAll() throws IOException {
-        if (fileUtil.readFileBuffer(bookFilePath).size() != 0 && fileUtil.readFileBuffer(bookFilePath).get(0) != null) {
+        if (fileUtil.readFileBuffer(bookFilePath).size() != 0 && fileUtil.readFileBuffer(FilePath.BOOK_FILE_PATH).get(0) != null) {
             List<Book> bookList = fileUtil.readFileBuffer(bookFilePath).stream().map(x -> convertToEntity(x)).toList();
             return bookList.stream().map(x -> bookMapper.toDTO(x)).collect(Collectors.toList());
         } else {
@@ -32,30 +33,31 @@ public class BookServiceImplement implements IBookService {
 
     @Override
     public void save(BookModel model) throws IOException {
-        Book book = bookMapper.modelToEntity(model);
-        int id = 0;
-        if (fileUtil.readFileBuffer(bookFilePath).size()!=0 && fileUtil.readFileBuffer(bookFilePath).get(0)!=null) {
-            id = fileUtil.readFileBuffer(bookFilePath).size() + 1;
-            book.setId(String.valueOf(id));
-            book.setAuthorIds(model.getAuthorIds());
-            StringBuilder content = new StringBuilder(book.getId() + "," + book.getName() + "," + book.getQuantity());
-            for (int i = 0; i < book.getAuthorIds().size(); i++) {
-                content.append("," + book.getAuthorIds().stream().toList().get(i));
-            }
-            content.append("\n");
-            fileUtil.writeFile("D:\\java_project\\blue-team-practice\\Practice1_BookStore\\src\\util\\book.txt", content.toString(), true);
-        } else {
-            id = 1;
-            book.setId(String.valueOf(id));
-            book.setAuthorIds(model.getAuthorIds());
-            StringBuilder content = new StringBuilder(book.getId() + "," + book.getName() + "," + book.getQuantity());
-            for (int i = 0; i < book.getAuthorIds().size(); i++) {
-                content.append("," + book.getAuthorIds().stream().toList().get(i));
-            }
-            content.append("\n");
-            fileUtil.writeFile("D:\\java_project\\blue-team-practice\\Practice1_BookStore\\src\\util\\book.txt", content.toString(), false);
-        }
+//        Book book = bookMapper.modelToEntity(model);
+//        int id = 0;
+//        if (fileUtil.readFileBuffer(bookFilePath).size()!=0 && fileUtil.readFileBuffer(bookFilePath).get(0)!=null) {
+//            id = fileUtil.readFileBuffer(bookFilePath).size() + 1;
+//            book.setId(String.valueOf(id));
+//            book.setAuthorIds(model.getAuthorIds());
+//            StringBuilder content = new StringBuilder(book.getId() + "," + book.getName() + "," + book.getQuantity());
+//            for (int i = 0; i < book.getAuthorIds().size(); i++) {
+//                content.append("," + book.getAuthorIds().stream().toList().get(i));
+//            }
+//            content.append("\n");
+//            fileUtil.writeFile("D:\\java_project\\blue-team-practice\\Practice1_BookStore\\src\\util\\book.txt", content.toString(), true);
+//        } else {
+//            id = 1;
+//            book.setId(String.valueOf(id));
+//            book.setAuthorIds(model.getAuthorIds());
+//            StringBuilder content = new StringBuilder(book.getId() + "," + book.getName() + "," + book.getQuantity());
+//            for (int i = 0; i < book.getAuthorIds().size(); i++) {
+//                content.append("," + book.getAuthorIds().stream().toList().get(i));
+//            }
+//            content.append("\n");
+//            fileUtil.writeFile("D:\\java_project\\blue-team-practice\\Practice1_BookStore\\src\\util\\book.txt", content.toString(), false);
+//        }
     }
+
 
     @Override
     public void edit(BookDTO bookDTO) throws IOException {
@@ -130,6 +132,7 @@ public class BookServiceImplement implements IBookService {
                 authorIds.add(Integer.parseInt(content[i]));
             }
         }
-        return new Book(id, name, quantity, authorIds);
+//        return new Book(id, name, quantity, authorIds);
+        return null;
     }
 }

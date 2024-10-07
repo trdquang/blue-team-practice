@@ -9,14 +9,14 @@ public class BookMapper {
         return BookDTO.builder()
                 .id(book.getId())
                 .name(book.getName())
-                .authorIds(book.getAuthorIds())
+                .authorIds(book.getAuthors())
                 .quantity(book.getQuantity())
                 .build();
     }
     public Book modelToEntity(BookModel model){
         return Book.builder()
                 .name(model.getName())
-                .authorIds(model.getAuthorIds())
+                .authors(model.getAuthorIds())
                 .quantity(model.getQuantity())
                 .build();
     }

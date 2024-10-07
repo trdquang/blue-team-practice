@@ -13,15 +13,11 @@ public class Book {
     private String id;
     private String name;
     private int quantity;
-<<<<<<< HEAD
-    private Set<Integer>authorIds;
-=======
-    private Set<Author>authors;
+    private Set<Integer>authors;
 
 
     @Override
     public String toString() {
         return id + ", " + name;
     }
->>>>>>> master
 }
