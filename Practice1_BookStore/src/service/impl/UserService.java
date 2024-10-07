@@ -56,19 +56,11 @@ public class UserService implements IUserService {
     public void save(UserModel userModel) {
         try{
             User user = UserMapper.toEntity(userModel);
-
             user.setId("user" + User.getSize());
             User.setSize(User.getSize() + 1);
 
             FileUtil.writeFile("src/util/user.txt", "\n" + user.toString(), true);
 
-
-//            for(int i = 0; i < 10; i++){
-//                user.setId("user" + User.getSize());
-//                User.setSize(User.getSize() + 1);
-//
-//                FileUtil.writeFile("src/util/user.txt", "\n" + user.toString(), true);
-//            }
         }catch (Exception e){
 
         }
