@@ -13,5 +13,5 @@ public class Book {
     private String id;
     private String name;
     private int quantity;
-    private Set<Author>authors;
+    private Set<Integer>authorIds;
 }
