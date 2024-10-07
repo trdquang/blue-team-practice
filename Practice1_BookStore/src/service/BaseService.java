@@ -1,18 +1,17 @@
 package service;
 
-import java.io.IOException;
 import java.util.List;
 
-public interface BaseService <T, U>{
+public interface BaseService <T, U, E>{
    //lay ra DTO
-    List<T> getAll() throws IOException;
+    List<T> getAll();
 
     //0- that bai, 1: thanh cong;   (model -> entiry)
-    void save(U u) throws IOException;
+    int save(U u);
 
-    void edit (T t) throws IOException;
+    int edit (U u);
 
-    void deleteById(String id) throws IOException;
+    int deleteById(String id);
 
-    T findById(String id) throws IOException;//index
+    int findById(String id);
 }
