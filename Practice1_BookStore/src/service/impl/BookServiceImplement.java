@@ -38,7 +38,9 @@ public class BookServiceImplement implements IBookService {
                 for (int j = 4; j < obj.length; j++) {
                     s.add(Integer.parseInt(obj[j].strip()));
                 }
-                int sell= Integer.parseInt(obj[3]);
+                int sell = -1;
+                if(obj.length > 4 &&  obj[3].strip() != null)
+                    sell= Integer.parseInt(obj[3].strip());
                 BookDTO bookTmp = new BookDTO(id, name, quantity, sell,s);
                 bookDTOS.add(bookTmp);
                 }

@@ -43,4 +43,14 @@ public class Menu {
         System.out.println("4. Delete by id");
         System.out.println("5. Show book by author");
     }
+
+    public static void menuAdminBook(){
+        System.out.println("-------------Manage book-------------");
+        System.out.println("0. Back menu");
+        System.out.println("1. View all book");
+        System.out.println("2. Add");
+        System.out.println("3. Edit");
+        System.out.println("4. Delete by id");
+        System.out.println("5. Show book by author");
+    }
 }

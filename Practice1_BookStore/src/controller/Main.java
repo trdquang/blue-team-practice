@@ -12,6 +12,7 @@ import service.impl.AuthorService;
 import service.impl.BookServiceImplement;
 import service.impl.OrderService;
 import service.impl.UserService;
+import util.FileUtil;
 import util.FuntionUtil;
 
 import java.io.IOException;
@@ -25,8 +26,16 @@ public class Main {
     //-------------------define static
     private static UserService userService = new UserService();
     private static OrderService orderService = new OrderService();
-    private static AuthorService authorService = new AuthorService();
+    private static AuthorService authorService;
     private static BookServiceImplement bookService;
+
+    static {
+        try {
+            authorService = new AuthorService();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     static {
         try {
@@ -142,19 +151,71 @@ public class Main {
                     }
                     break;
                 case 2:
-//                    authorService.save();
+                    authorService.saveFlowName();
                     break;
                 case 3:
-
+                    authorService.EditEntity();
                     break;
                 case 4:
                     System.out.print("User wanto delete >>>");
                     String idDelete = sc.nextLine();
-                    orderService.deleteById(idDelete);
+                    authorService.deleteById(idDelete);
+                    break;
+                case 5:
+                    authorService.showBooksByAuthor();
                     break;
             }
         }
     }
+
+    //----------------------manage book
+    public static void adminBook() throws IOException {
+        while (true) {
+            Menu.menuAdminBook();
+            System.out.print("Choose mange-book >>");
+            int chooseMenu = FuntionUtil.inputOneNum();
+            switch (chooseMenu) {
+                case 0:
+                    return;
+                case 1:
+                    List<BookDTO> bookDTOS = bookService.getAll();
+                    System.out.printf(
+                            "%-10s, %-15s, %-15s\n",
+                            "Id", "name", "quantity");
+                    for (BookDTO it : bookDTOS) {
+                        System.out.printf(
+                                "%-10s, %-15s, %-15d\n",
+                                it.getId() , it.getName(), it.getQuantity());
+                    }
+                    break;
+                case 2:
+                    System.out.print("Name >>");
+                    String name = sc.nextLine();
+                    System.out.print("Quantity >>");
+                    Integer quantity = FuntionUtil.inputOneNum();
+                    Set<Integer> setList = new HashSet<>();
+                    setList.add(1);
+                    BookModel bk = new BookModel(name, quantity, setList);
+                    bookService.save(bk);
+                    break;
+                case 3:
+                    System.out.print("Id to edit >>");
+                    String idToEdit = sc.nextLine();
+                    BookDTO bookDTOEdit = bookService.findById(idToEdit);
+                    bookService.edit(bookDTOEdit);
+                    break;
+                case 4:
+                    System.out.print("User wanto delete >>>");
+                    String idDelete = sc.nextLine();
+                    bookService.deleteById(idDelete);
+                    break;
+                case 5:
+//                    bookService.getAllByAuthor();
+                    break;
+            }
+        }
+    }
+
 
     public static int adminManager() throws IOException {
         while (true) {
@@ -166,6 +227,9 @@ public class Main {
                     break;
                 case 1:
                     adminUser();
+                    break;
+                case 2:
+                    adminBook();
                     break;
                 case 3:
                     adminAuthor();
@@ -179,6 +243,15 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         while (true) {
+            List<BookDTO> bookDTOS = bookService.getAll();
+            System.out.printf(
+                    " %-15s, %-15s\n",
+                    "name", "quantity");
+            for (BookDTO it : bookDTOS) {
+                System.out.printf(
+                        " %-15s, %-15d\n",
+                        it.getName(), it.getQuantity());
+            }
             Menu.menu();
             System.out.print("Your choose >>");
             int chooseMenu = FuntionUtil.inputOneNum();
@@ -186,6 +259,8 @@ public class Main {
                 System.out.println("Bye");
                 System.exit(0);
             }
+
+
 
             //--------------------------------admin
 //            if (chooseMenu == 1)
@@ -204,6 +279,9 @@ public class Main {
                     else if (userDTO.getRoleId().strip().equalsIgnoreCase("user")) {
 
                     }
+                    break;
+                case 2:
+
                     break;
             }
         }
