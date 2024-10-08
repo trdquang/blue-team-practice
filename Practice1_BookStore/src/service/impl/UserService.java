@@ -6,6 +6,7 @@ import jdk.jshell.execution.Util;
 import mapper.UserMapper;
 import model.UserModel;
 import service.IUserService;
+import util.FilePath;
 import util.FileUtil;
 
 import java.io.IOException;
@@ -16,7 +17,8 @@ import java.util.Scanner;
 public class UserService implements IUserService {
     private Scanner sc = new Scanner(System.in);
 
-    UserModel inputOne(){
+    @Override
+    public UserModel inputOne(){
         System.out.print("Name: ");
         String name = sc.nextLine();
         System.out.print("Password: ");
@@ -31,14 +33,14 @@ public class UserService implements IUserService {
         List<UserDTO> userDTOS = new ArrayList<>();
         try {
 //            System.out.println(User.size);
-            List<String> res = FileUtil.readFileBuffer("src/util/user.txt");
+            List<String> res = FileUtil.readFileBuffer(FilePath.USER_FILE_PATH);
             for(int i = 0; i < res.size(); i++){
                 String[] obj = res.get(i).split(",");
 
-                String id = obj[0];
-                String name = obj[1];
-                String pass = obj[2];
-                String roleId = obj[3];
+                String id = obj[0].strip();
+                String name = obj[1].strip();
+                String pass = obj[2].strip();
+                String roleId = obj[3].strip();
 
                 UserDTO userTmp = new UserDTO(id, name, pass, roleId);
                 userDTOS.add(userTmp);
@@ -55,12 +57,13 @@ public class UserService implements IUserService {
     @Override
     public void save(UserModel userModel) {
         try{
+            userModel.setRoleId("user");
             User user = UserMapper.toEntity(userModel);
             user.setId("user" + User.getSize());
             User.setSize(User.getSize() + 1);
 
-            FileUtil.writeFile("src/util/user.txt", "\n" + user.toString(), true);
-
+            FileUtil.writeFile(FilePath.USER_FILE_PATH,  user.toString() + "\n", true);
+            System.out.println("***Save success***");
         }catch (Exception e){
 
         }
@@ -82,8 +85,8 @@ public class UserService implements IUserService {
             }
             lineWrite +=  UserMapper.toEntity(userDTOS.get(i)).toString() + "\n";
         }
-        FileUtil.writeFile("src/util/user.txt", lineWrite , false);
-
+        FileUtil.writeFile(FilePath.USER_FILE_PATH, lineWrite , false);
+        System.out.println("***Edit success***");
 
     }
 
@@ -103,7 +106,7 @@ public class UserService implements IUserService {
 //        System.out.println("pos = " + pos);
 
         if(pos == -1){
-            System.out.println("Không có id này");
+            System.out.println("Id not found");
         }else{
             userDTOS.remove(pos);
             System.out.println("đã xóa");
@@ -111,7 +114,8 @@ public class UserService implements IUserService {
             for(int i = 0; i < userDTOS.size(); i++){
                  lineWrite +=  UserMapper.toEntity(userDTOS.get(i)).toString() + "\n";
             }
-            FileUtil.writeFile("src/util/user.txt", lineWrite , false);
+            FileUtil.writeFile(FilePath.USER_FILE_PATH, lineWrite , false);
+            System.out.println("***Delete success***");
         }
     }
 
@@ -126,5 +130,38 @@ public class UserService implements IUserService {
             }
         }
         return null;
+    }
+
+    @Override
+    public UserDTO login() throws IOException {
+        List<UserDTO>userDTOS = getAll();
+        UserModel userModel = inputOne() ;
+        for(UserDTO item: userDTOS){
+            if(item.getName().strip().equalsIgnoreCase(userModel.getName()) &&
+                    item.getPassword().strip().equalsIgnoreCase(userModel.getPassword())) {
+//                System.out.println(item.getName() + ", " + item.getPassword());
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void changePassword(String id) throws IOException {
+        List<UserDTO> userDTOS = getAll();
+
+        System.out.print("New password: ");
+        String pass = sc.nextLine();
+
+        String lineWrite = "";
+
+        for(int i = 0; i < userDTOS.size(); i++){
+            if(userDTOS.get(i).getId().equalsIgnoreCase(id)){
+                userDTOS.get(i).setPassword(pass);
+                System.out.println("Change pass sucess");
+            }
+            lineWrite +=  UserMapper.toEntity(userDTOS.get(i)).toString() + "\n";
+        }
+        FileUtil.writeFile(FilePath.USER_FILE_PATH, lineWrite , false);
     }
 }

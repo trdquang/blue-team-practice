@@ -15,4 +15,6 @@ public class OrderDTO {
     private String bookId;
     private int sell;
     private Date date;
+    private String userName;
+    private String bookName;
 }
