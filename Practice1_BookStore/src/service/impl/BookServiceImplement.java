@@ -106,7 +106,14 @@ public class BookServiceImplement implements IBookService {
 
     @Override
     public BookDTO findById(String id) throws IOException {
-        return getAll().stream().filter(x->x.getId().equals(id)).toList().get(0);
+//        BookDTO bookDTO = new BookDTO();
+        List<BookDTO> bookDTOS = getAll();
+        for(BookDTO it: bookDTOS){
+            if(it.getId().strip().equalsIgnoreCase(id))
+                return it;
+        }
+        return null;
+//        return getAll().stream().filter(x->x.getId().equals(id)).toList().get(0);
     }
 
     @Override

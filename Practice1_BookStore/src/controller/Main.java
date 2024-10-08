@@ -1,5 +1,6 @@
 package controller;
 
+import dto.AuthorDTO;
 import dto.BookDTO;
 import dto.OrderDTO;
 import dto.UserDTO;
@@ -7,6 +8,7 @@ import entity.Book;
 import model.BookModel;
 import model.UserModel;
 import service.IBookService;
+import service.impl.AuthorService;
 import service.impl.BookServiceImplement;
 import service.impl.OrderService;
 import service.impl.UserService;
@@ -23,6 +25,16 @@ public class Main {
     //-------------------define static
     private static UserService userService = new UserService();
     private static OrderService orderService = new OrderService();
+    private static AuthorService authorService = new AuthorService();
+    private static BookServiceImplement bookService;
+
+    static {
+        try {
+            bookService = new BookServiceImplement();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private static Scanner sc = new Scanner(System.in);
     private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -101,7 +113,44 @@ public class Main {
 
                     break;
                 case 4:
+                    System.out.print("User wanto delete >>>");
+                    String idDelete = sc.nextLine();
+                    orderService.deleteById(idDelete);
+                    break;
+            }
+        }
+    }
 
+    //-----------------------manager author
+    public static void adminAuthor() throws IOException {
+        while (true) {
+            Menu.menuAdminAuthor();
+            System.out.print("Choose mange-order >>");
+            int chooseMenu = FuntionUtil.inputOneNum();
+            switch (chooseMenu) {
+                case 0:
+                    return;
+                case 1:
+                    List<AuthorDTO> authorDTOS = authorService.getAll();
+                    System.out.printf(
+                            "%-10s, %-15s\n",
+                            "Id", "author name");
+                    for (AuthorDTO it : authorDTOS) {
+                        System.out.printf(
+                                "%-10s, %-15s\n",
+                                it.getId() , it.getName());
+                    }
+                    break;
+                case 2:
+//                    authorService.save();
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+                    System.out.print("User wanto delete >>>");
+                    String idDelete = sc.nextLine();
+                    orderService.deleteById(idDelete);
                     break;
             }
         }
@@ -117,6 +166,9 @@ public class Main {
                     break;
                 case 1:
                     adminUser();
+                    break;
+                case 3:
+                    adminAuthor();
                     break;
                 case 4:
                     adminOrder();
