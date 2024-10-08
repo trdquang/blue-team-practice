@@ -147,11 +147,11 @@ public class Main {
                     if(userDTO == null)
                         System.out.println(" >> Login failed");
                     else
-                        if(userDTO.getRoleId().strip().equalsIgnoreCase("admin"))
-                            adminManager();
-                        else if (userDTO.getRoleId().strip().equalsIgnoreCase("user")) {
+                    if(userDTO.getRoleId().strip().equalsIgnoreCase("admin"))
+                        adminManager();
+                    else if (userDTO.getRoleId().strip().equalsIgnoreCase("user")) {
 
-                        }
+                    }
                     break;
             }
         }

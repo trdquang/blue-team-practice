@@ -1,5 +1,6 @@
 package service.impl;
 
+import dto.AuthorDTO;
 import dto.BookDTO;
 import dto.UserDTO;
 import entity.Author;
@@ -24,33 +25,27 @@ public class BookServiceImplement implements IBookService {
 
     @Override
     public List<BookDTO> getAll() throws IOException {
-//        if (fileUtil.readFileBuffer(bookFilePath).size() != 0 && fileUtil.readFileBuffer(bookFilePath).get(0) != null) {
-//            List<Book> bookList = fileUtil.readFileBuffer(bookFilePath).stream().map(x -> convertToEntity(x)).toList();
-//            return bookList.stream().map(x -> bookMapper.toDTO(x)).collect(Collectors.toList());
-//        } else {
-//            return new ArrayList<BookDTO>();
-//        }
         List<BookDTO> bookDTOS = new ArrayList<>();
         try {
             List<String> res = FileUtil.readFileBuffer(bookFilePath);
-            for(int i = 0; i < res.size(); i++){
+            for (int i = 0; i < res.size(); i++) {
+                if(!res.get(i).equals("")){
                 String[] obj = res.get(i).split(",");
-
                 String id = obj[0];
                 String name = obj[1];
                 int quantity = Integer.parseInt(obj[2].strip());
                 Set<Integer> s = new HashSet<>();
-                for(int j = 3; j < obj.length; j++){
+                for (int j = 4; j < obj.length; j++) {
                     s.add(Integer.parseInt(obj[j].strip()));
                 }
-
-                BookDTO bookTmp = new BookDTO(id, name, quantity, s);
+                int sell= Integer.parseInt(obj[3]);
+                BookDTO bookTmp = new BookDTO(id, name, quantity, sell,s);
                 bookDTOS.add(bookTmp);
+                }
             }
-//            System.out.println("Da den day");
             return bookDTOS;
 
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         return List.of();
@@ -58,105 +53,90 @@ public class BookServiceImplement implements IBookService {
 
     @Override
     public void save(BookModel model) throws IOException {
-        Book book = bookMapper.modelToEntity(model);
-        int id = 0;
-        if (fileUtil.readFileBuffer(bookFilePath).size()!=0 && fileUtil.readFileBuffer(bookFilePath).get(0)!=null) {
-            id = fileUtil.readFileBuffer(bookFilePath).size() + 1;
-            book.setId(String.valueOf(id));
-            book.setAuthorIds(model.getAuthorIds());
-            StringBuilder content = new StringBuilder(book.getId() + "," + book.getName() + "," + book.getQuantity());
-            for (int i = 0; i < book.getAuthorIds().size(); i++) {
-                content.append("," + book.getAuthorIds().stream().toList().get(i));
-            }
-            content.append("\n");
-            fileUtil.writeFile("D:\\java_project\\blue-team-practice\\Practice1_BookStore\\src\\util\\book.txt", content.toString(), true);
-        } else {
-            id = 1;
-            book.setId(String.valueOf(id));
-            book.setAuthorIds(model.getAuthorIds());
-            StringBuilder content = new StringBuilder(book.getId() + "," + book.getName() + "," + book.getQuantity());
-            for (int i = 0; i < book.getAuthorIds().size(); i++) {
-                content.append("," + book.getAuthorIds().stream().toList().get(i));
-            }
-            content.append("\n");
-            fileUtil.writeFile("D:\\java_project\\blue-team-practice\\Practice1_BookStore\\src\\util\\book.txt", content.toString(), false);
+        Book newBook = bookMapper.modelToEntity(model);
+        newBook.setId(String.valueOf(getAll().size()+1));
+        StringBuilder content=new StringBuilder(newBook.getId() + "," + newBook.getName()+","+newBook.getQuantity());
+        for (int authorId: newBook.getAuthorIds()){
+            content.append(","+authorId);
         }
+        content.append(0);
+        fileUtil.writeFile(bookFilePath, content.toString()+"\n", true);
     }
 
 
     @Override
     public void edit(BookDTO bookDTO) throws IOException {
         List<BookDTO> bookDTOList = getAll();
-        BookDTO sltBook = bookDTOList.stream().filter(x -> x.getId().equals(bookDTO.getId())).toList().get(0);
-        sltBook.setName(bookDTO.getName());
-        sltBook.setQuantity(bookDTO.getQuantity());
-        sltBook.setAuthorIds(bookDTO.getAuthorIds());
+        BookDTO sltBookDTO=bookDTOList.stream().filter(x->x.getId().equals(bookDTO.getId())).toList().get(0);
+        sltBookDTO.setName(bookDTO.getName());
+        sltBookDTO.setQuantity(bookDTO.getQuantity());
+        sltBookDTO.setAuthorIds(bookDTO.getAuthorIds());
+        List<Book> bookList = bookDTOList.stream().map(x -> bookMapper.toEntity(x)).toList();
         fileUtil.writeFile(bookFilePath, "", false);
-        for (BookDTO dto : bookDTOList) {
-            StringBuilder content = new StringBuilder(dto.getId() + "," + dto.getName() + "," + dto.getQuantity());
-            for (int authorId : dto.getAuthorIds()) {
-                content.append("," + authorId);
+        for (Book book : bookList) {
+            StringBuilder context = new StringBuilder(book.getId() + "," + book.getName() + "," + book.getQuantity());
+            for (Integer authorId : book.getAuthorIds()) {
+                context.append("," + authorId);
             }
-            content.append("\n");
-            fileUtil.writeFile(bookFilePath, content.toString(), true);
+            context.append(book.getSell());
+            fileUtil.writeFile(bookFilePath,context.toString()+"\n",true);
         }
     }
 
     @Override
     public void deleteById(String id) throws IOException {
-        List<BookDTO> bookList = getAll();
-        bookList.remove(bookList.stream().filter(x -> x.getId().equals(id)).toList().get(0));
-        fileUtil.writeFile(bookFilePath, "", false);
-        for (BookDTO dto : bookList) {
-            StringBuilder content = new StringBuilder(dto.getId() + "," + dto.getName() + "," + dto.getQuantity());
-            for (int authorId : dto.getAuthorIds()) {
-                content.append("," + authorId);
+        List<BookDTO> bookDTOList = getAll();
+        for (BookDTO dto:bookDTOList){
+            if(dto.getId().equals(id)){
+                bookDTOList.remove(dto);
+                break;
             }
-            content.append("\n");
-            fileUtil.writeFile(bookFilePath, content.toString(), true);
+        }
+        List<Book> bookList = bookDTOList.stream().map(x -> bookMapper.toEntity(x)).toList();
+        fileUtil.writeFile(bookFilePath, "", false);
+        for (Book book : bookList) {
+            StringBuilder context = new StringBuilder(book.getId() + "," + book.getName() + "," + book.getQuantity());
+            for (Integer authorId : book.getAuthorIds()) {
+                context.append("," + authorId);
+            }
+            context.append(book.getSell());
+            fileUtil.writeFile(bookFilePath,context.toString()+"\n",true);
         }
     }
 
     @Override
     public BookDTO findById(String id) throws IOException {
-        if (fileUtil.readFileBuffer(bookFilePath).size() != 0 && !fileUtil.readFileBuffer(bookFilePath).get(0).equals("")) {
-            return bookMapper.toDTO(fileUtil.readFileBuffer(bookFilePath).stream().map(x -> convertToEntity(x)).toList().get(0));
-        } else {
-            return null;
-        }
+        return getAll().stream().filter(x->x.getId().equals(id)).toList().get(0);
     }
 
-//    @Override
-//    public List<BookDTO> getAllByAuthor(String authorId) throws IOException {
-//        List<BookDTO> books = new ArrayList<>();
-//        for (BookDTO book:getAll()){
-//            for (Integer auId: book.getAuthorIds()){
-//                if(auId==Integer.parseInt(authorId)){
-//                    books.add(book);
-//                    break;
-//                }
-//            }
-//        }
-//        return books;
-//    }
-
-    public Book convertToEntity(String obj) {
-        String[] content = obj.split(",");
-        String id = new String();
-        String name = new String();
-        int quantity = 0;
-        Set<Integer> authorIds = new HashSet<>();
-        for (int i = 0; i < content.length; i++) {
-            if (i == 0) {
-                id = content[i];
-            } else if (i == 1) {
-                name = content[i];
-            } else if (i == 2) {
-                quantity = Integer.parseInt(content[i]);
-            } else {
-                authorIds.add(Integer.parseInt(content[i]));
+    @Override
+    public List<BookDTO> getAllByAuthor(AuthorDTO author) throws IOException {
+        List<BookDTO> bookDTOList= new ArrayList<>();
+        for(BookDTO dto:getAll()){
+            for (int authorId:dto.getAuthorIds()){
+                if(authorId==Integer.parseInt(author.getId())){
+                    bookDTOList.add(dto);
+                    break;
+                }
             }
         }
-        return new Book(id, name, quantity, authorIds);
+        return bookDTOList;
+    }
+
+    @Override
+    public void sell(int bookId,int quantity) throws IOException {
+        List<BookDTO> bookDTOList = getAll();
+        BookDTO sltBookDTO=bookDTOList.stream().filter(x->x.getId().equals(bookId)).toList().get(0);
+        sltBookDTO.setQuantity(sltBookDTO.getQuantity()-quantity);
+        sltBookDTO.setSell(sltBookDTO.getSell()+quantity);
+        List<Book> bookList = bookDTOList.stream().map(x -> bookMapper.toEntity(x)).toList();
+        fileUtil.writeFile(bookFilePath, "", false);
+        for (Book book : bookList) {
+            StringBuilder context = new StringBuilder(book.getId() + "," + book.getName() + "," + book.getQuantity());
+            for (Integer authorId : book.getAuthorIds()) {
+                context.append("," + authorId);
+            }
+            fileUtil.writeFile(bookFilePath,context.toString()+"\n",true);
+        }
     }
 }
