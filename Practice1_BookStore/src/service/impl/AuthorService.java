@@ -247,7 +247,7 @@ public class AuthorService implements IAuthorService {
             for (AuthorDTO authorDTO : authorDTOS) {
                 Integer authorId = Integer.parseInt(authorDTO.getId());
                 for (BookDTO bookDTO : bookDTOS) {
-                    Set<Integer> bookAuthorIds = bookDTO.getAuthorIds();
+                    Set<String> bookAuthorIds = bookDTO.getAuthorIds();
 
                     if (bookAuthorIds.contains(authorId)) {
                         System.out.println("Book: " + bookDTO.getName() + " belongs to Author: " + authorDTO.getName());
@@ -294,7 +294,8 @@ public class AuthorService implements IAuthorService {
 
         String id = generateNewId();
         System.out.println("nhập name");
-        String name = scanner.next();
+//        String name = scanner.next();
+        String name = scanner.nextLine();
         AuthorModel authorModel = new AuthorModel(id,name);
         save(authorModel);
     }

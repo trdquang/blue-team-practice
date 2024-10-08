@@ -12,5 +12,6 @@ import java.util.Set;
 public class BookModel {
     private String name;
     private int quantity;
-    private Set<Integer> authorIds;
+    private int sell;
+    private Set<String> authorIds;
 }

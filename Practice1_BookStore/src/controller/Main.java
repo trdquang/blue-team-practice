@@ -193,9 +193,9 @@ public class Main {
                     String name = sc.nextLine();
                     System.out.print("Quantity >>");
                     Integer quantity = FuntionUtil.inputOneNum();
-                    Set<Integer> setList = new HashSet<>();
-                    setList.add(1);
-                    BookModel bk = new BookModel(name, quantity, setList);
+                    Set<String> setList = new HashSet<>();
+                    setList.add(String.valueOf(1));
+                    BookModel bk = new BookModel(name, quantity,0,setList);
                     bookService.save(bk);
                     break;
                 case 3:

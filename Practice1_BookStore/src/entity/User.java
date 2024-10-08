@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class User {
-    public static int size = 1;
+    public static int size = 10;
     private String id;
     private String name;
     private String password;

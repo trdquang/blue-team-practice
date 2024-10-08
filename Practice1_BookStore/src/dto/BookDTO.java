@@ -14,5 +14,5 @@ public class BookDTO {
     private String name;
     private int quantity;
     private int sell;
-    private Set<Integer> authorIds;
+    private Set<String> authorIds;
 }

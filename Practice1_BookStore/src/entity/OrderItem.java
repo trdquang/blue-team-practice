@@ -17,7 +17,7 @@ public class OrderItem {
     private String bookId;
     private int sell;
     private Date date;
-    private static int size = 0;
+    private static int size = 3;
 
     public static int getSize() {
         return size;

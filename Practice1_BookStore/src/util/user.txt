@@ -1,8 +1,0 @@
-user2,   a,   abcd,   admin
-user3,   a,   abcd,   admin
-user4,   a,   bcde,   user
-user5,   a,   abcd,   user
-user6,  1,  1,   user
-user1,   kaka,   abcd,   
-user2,   ka,   abcd,   
-user1,   hê,   hê hê,   user
