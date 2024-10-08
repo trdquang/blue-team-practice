@@ -19,6 +19,7 @@ public class BookMapper {
                 .name(model.getName())
                 .authorIds(model.getAuthorIds())
                 .quantity(model.getQuantity())
+                .sell(0)
                 .build();
     }
     public Book toEntity(BookDTO dto){

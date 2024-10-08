@@ -3,6 +3,7 @@ package service.impl;
 import dto.AuthorDTO;
 import dto.UserDTO;
 import entity.Author;
+import mapper.AuthorMapper;
 import model.AuthorModel;
 import model.UserModel;
 import service.IAuthorService;
@@ -65,7 +66,7 @@ public class AuthorService implements IAuthorService {
 
     @Override
     public AuthorDTO findById(String id) throws IOException {
-        return getAll().stream().filter(x->x.getId().equals(id)).toList().get(0);
+        return null;
     }
 
 }
